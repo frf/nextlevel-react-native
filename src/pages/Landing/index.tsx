@@ -5,7 +5,7 @@ import landingImg from '../../assets/images/landing.png';
 import studyIcon from '../../assets/images/icons/study.png';
 import giveClassesIcon from '../../assets/images/icons/give-classes.png';
 import heartIcon from '../../assets/images/icons/heart.png';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { RectButton } from 'react-native-gesture-handler';
 import api from '../../services/api';
 
@@ -13,13 +13,22 @@ function Landing() {
   const { navigate } = useNavigation();
   const [totalConnections, setTotalConnections] = useState(0);
 
-  useEffect(() => {
+ 
+
+  function loadingConnections() {
     api.get('connections')
     .then(response => {
       const { total } = response.data;
+
+      console.log(total);
+
       setTotalConnections(total);
     })
-  }, []);
+  }
+
+  useFocusEffect(() => {
+    loadingConnections();
+  })
 
   function handleNavigareToGiveClassesPage() {
     navigate('GiveClasses');

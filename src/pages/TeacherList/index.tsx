@@ -8,6 +8,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import api from '../../services/api';
 
 import styles from './styles';
+import { useFocusEffect } from '@react-navigation/native';
 
 function TeacherList() {
     const [isFilterVisible, setIsFilterVisible] = useState(false);
@@ -29,6 +30,10 @@ function TeacherList() {
             }
         });
     }
+
+    useFocusEffect(() => {
+        loadFavorites();
+    })
 
     async function handleFiltersSubmit() {
         loadFavorites();
