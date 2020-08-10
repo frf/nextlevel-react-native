@@ -1,12 +1,34 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import styles from './styles';
 import landingImg from '../../assets/images/landing.png';
 import studyIcon from '../../assets/images/icons/study.png';
 import giveClassesIcon from '../../assets/images/icons/give-classes.png';
 import heartIcon from '../../assets/images/icons/heart.png';
+import { useNavigation } from '@react-navigation/native';
+import { RectButton } from 'react-native-gesture-handler';
+import api from '../../services/api';
 
 function Landing() {
+  const { navigate } = useNavigation();
+  const [totalConnections, setTotalConnections] = useState(0);
+
+  useEffect(() => {
+    api.get('connections')
+    .then(response => {
+      const { total } = response.data;
+      setTotalConnections(total);
+    })
+  }, []);
+
+  function handleNavigareToGiveClassesPage() {
+    navigate('GiveClasses');
+  }
+
+  function handleNavigateToStudyPages() {
+    navigate('Study');
+  }
+
   return (
     <View style={styles.container} >
       <Image source={landingImg} style={styles.banner} />
@@ -17,19 +39,19 @@ function Landing() {
       </Text>
 
       <View style={styles.buttonsContainer}>
-        <TouchableOpacity style={[styles.button, styles.buttonPrimary]}>
+        <RectButton onPress={handleNavigateToStudyPages} style={[styles.button, styles.buttonPrimary]}>
           <Image source={studyIcon}/>
           <Text style={styles.buttonText}>Estudar</Text>
-        </TouchableOpacity>
+        </RectButton>
 
-        <TouchableOpacity style={[styles.button, styles.buttonSecundary]}>
+        <RectButton onPress={handleNavigareToGiveClassesPage} style={[styles.button, styles.buttonSecundary]}>
           <Image source={giveClassesIcon}/>
           <Text style={styles.buttonText}>Dar aulas</Text>
-        </TouchableOpacity>
+        </RectButton>
       </View>
 
       <Text style={styles.totalConnections}>
-        Total de 285 conexões realizadas. {' '}
+        Total de {totalConnections} conexões realizadas. {' '}
         <Image source={heartIcon}  />
       </Text>
     </View>
