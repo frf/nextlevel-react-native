@@ -12,3 +12,7 @@ ReactNative app next level
 
 
 react-native-community/picker
+
+- expo install @react-native-community/async-storage
+
+- yarn add axios
